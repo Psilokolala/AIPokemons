@@ -1,68 +1,35 @@
-export class Pokemon {
-    constructor(x, y, species) {
+class Pokemon {
+    constructor(x, y, species, size = 40) {
         this.x = x;
         this.y = y;
-        this.name = species; // Сохраняем полное имя с эмодзи
-        this.species = species.split(' ')[0]; // Убираем эмодзи из имени
-        this.size = 48;
-        this.speed = 0.5; // Уменьшаем скорость в 2 раза
-        this.moonStonesCollected = 0;
-        this.spriteLoaded = false;
-        this.mood = 'normal';
-        
-        // Добавляем параметры для движения
-        this.targetX = x;
-        this.targetY = y;
-        this.isMoving = false;
-        this.moveTimer = 0;
-        this.outOfBoundsTimer = 0;
-        this.isOutOfBounds = false;
-        this.direction = Math.random() * Math.PI * 2;
-        this.changeDirectionCounter = 0;
-        this.maxChangeDirectionTime = 200; // Увеличиваем время между сменой направления
-        
-        // Флаги типов покемонов (будут установлены в Game.createPokemon)
-        this.isFlying = false;
-        this.isWater = false;
-        this.isInFight = false;
-
-        // Создаем новый объект Image
-        this.sprite = new Image();
-        const pokemonId = this.getPokemonId();
-        console.log(`Загрузка спрайта для ${this.species} (ID: ${pokemonId})`);
-        
-        // Устанавливаем обработчики до установки src
-        this.sprite.onload = () => {
-            console.log(`Спрайт загружен: ${this.species}`);
-            this.spriteLoaded = true;
-            if (window.gameInstance) {
-                window.gameInstance.loadingCount--;
-            }
-        };
-        
-        this.sprite.onerror = (error) => {
-            console.error(`Ошибка загрузки спрайта для ${this.species}:`, error);
-            const fallbackId = pokemonId || Math.floor(Math.random() * 151) + 1;
-            console.log(`Пробуем загрузить резервный спрайт (ID: ${fallbackId})`);
-            this.sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${fallbackId}.png`;
-        };
-        
-        // Загружаем спрайт покемона
-        const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;
-        console.log(`Загружаем спрайт с URL: ${spriteUrl}`);
-        this.sprite.crossOrigin = 'Anonymous'; // Добавляем поддержку CORS
-        this.sprite.src = spriteUrl;
-
-        // Добавляем свойства для сна
-        this.isSleeping = false;
-<<<<<<< HEAD
-        this.sleepStartTime = 0;
-        this.sleepDuration = 10000; // 10 секунд сна
-=======
-        this.sleepStartTime = null;
-        this.sleepDuration = null;
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
+        this.species = species;
+        this.name = species;
+        this.size = size;
+        this.speed = 2;
         this.originalSpeed = this.speed;
+        this.direction = Math.random() * Math.PI * 2;
+        this.changeDirectionInterval = 2000;
+        this.lastDirectionChange = Date.now();
+        this.sprite = new Image();
+        this.sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${this.getPokemonNumber()}.png`;
+        this.sprite.onload = () => {
+            this.spriteLoaded = true;
+        };
+        
+        // Свойства для боя
+        this.isInFight = false;
+        this.fightPartner = null;
+        this.carriedItem = null;
+        
+        // Свойства для сна
+        this.isSleeping = false;
+        this.sleepStartTime = 0;
+        this.sleepDuration = 10000; // 10 секунд
+        
+        // Свойства для эффекта сияния
+        this.isGlowing = false;
+        this.glowStartTime = 0;
+        this.glowDuration = 3000; // 3 секунды
     }
 
     getPokemonId() {
@@ -103,21 +70,10 @@ export class Pokemon {
 
     update(pokemons, moonStones, biomes) {
         if (this.isSleeping) {
-<<<<<<< HEAD
             // Если покемон спит, не обновляем его позицию
             return;
         }
 
-=======
-            // Проверяем, не пора ли проснуться
-            if (Date.now() - this.sleepStartTime > this.sleepDuration) {
-                this.wakeUp();
-            }
-            return; // Не обновляем позицию, если покемон спит
-        }
-
-        // Если покемон в драке, не обновляем его позицию
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
         if (this.isInFight) return;
 
         const now = Date.now();
@@ -214,33 +170,15 @@ export class Pokemon {
         );
     }
 
-<<<<<<< HEAD
     // Добавляем метод для начала сна
     startSleeping() {
         this.isSleeping = true;
         this.sleepStartTime = Date.now();
         this.speed = 0; // Останавливаем движение во время сна
-=======
-    // Добавляем метод для сна
-    startSleeping() {
-        if (this.isSleeping) return; // Предотвращаем повторное засыпание
-        
-        console.log(`${this.name} начинает засыпать...`);
-        this.isSleeping = true;
-        this.sleepStartTime = Date.now();
-        this.sleepDuration = 15000 + Math.random() * 15000; // Уменьшаем время сна до 15-30 секунд для тестирования
-        this.originalSpeed = this.speed;
-        this.speed = 0;
-        
-        console.log(`${this.name} заснул на ${Math.floor(this.sleepDuration/1000)} секунд`);
-        console.log('Текущая скорость:', this.speed);
-        console.log('Оригинальная скорость:', this.originalSpeed);
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
     }
 
     // Добавляем метод для пробуждения
     wakeUp() {
-<<<<<<< HEAD
         this.isSleeping = false;
         this.speed = this.originalSpeed; // Возвращаем оригинальную скорость
     }
@@ -248,23 +186,6 @@ export class Pokemon {
     // Добавляем метод для пробуждения по клику
     wakeUpOnClick() {
         if (this.isSleeping) {
-=======
-        if (!this.isSleeping) return; // Предотвращаем пробуждение уже бодрствующего покемона
-        
-        console.log(`${this.name} начинает просыпаться...`);
-        this.isSleeping = false;
-        this.speed = this.originalSpeed;
-        this.sleepStartTime = null;
-        this.sleepDuration = null;
-        
-        console.log(`${this.name} проснулся!`);
-        console.log('Восстановленная скорость:', this.speed);
-    }
-
-    wakeUpOnClick() {
-        if (this.isSleeping) {
-            console.log(`${this.name} разбужен кликом!`);
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
             this.wakeUp();
             return true;
         }

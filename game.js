@@ -1,9 +1,5 @@
 // Импортируем тексты из texts.js
-<<<<<<< HEAD
 import { pokemonRandomQuotes, pokemonBattleQuotes, pokemonClickQuotes, sleepingPokemonQuotes, pokemonCookieQuotes } from './texts.js';
-=======
-import { pokemonRandomQuotes, pokemonBattleQuotes, pokemonClickQuotes, sleepingPokemonQuotes } from './texts.js';
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
 import { Pokemon } from './pokemon-sandbox.js';
 
 // Класс для шума Перлина
@@ -85,64 +81,46 @@ class PerlinNoise {
 }
 
 class Game {
-<<<<<<< HEAD
     constructor() {
         this.canvas = document.getElementById('gameCanvas');
         this.ctx = this.canvas.getContext('2d');
-        this.canvas.width = 800;
-        this.canvas.height = 600;
-        this.animationFrame = 0;
+        
+        // Инициализация свойств
+        this.animationFrame = null;
         this.lastTime = 0;
         this.fps = 60;
         this.frameInterval = 1000 / this.fps;
+        
+        // Массивы объектов
         this.pokemons = [];
         this.moonStones = [];
         this.fights = [];
         this.messages = [];
-        this.lastMessageTime = 0;
-        this.messageDuration = 3000;
-        this.lastFightTime = 0;
-        this.fightCooldown = 5000;
-        this.lastStarSpawnTime = 0;
-        this.starSpawnInterval = 10000;
         this.stars = [];
         this.cookies = [];
-        this.sleepingPokemons = new Set();
+        
+        // Параметры сна
         this.sleepCheckInterval = 30000; // 30 секунд
-        this.lastSleepCheck = 0;
         this.sleepChance = 0.3; // 30% шанс заснуть
-        this.maxSleepingPokemons = 0.4; // Максимум 40% покемонов могут спать
+        this.maxSleepingPokemons = 2;
+        this.lastSleepCheck = 0;
         
-        // Устанавливаем глобальный экземпляр игры
+        // Загрузка изображения карты
+        this.mapImage = new Image();
+        this.mapImage.src = 'assets/map.png';
+        this.mapImage.onload = () => {
+            this.initializeGame();
+            this.setupEventListeners();
+            this.animate();
+        };
+        
+        // Установка глобального экземпляра
         window.gameInstance = this;
-        
-        this.initializeGame();
-        this.setupEventListeners();
-        this.animate();
     }
 
     initializeGame() {
         console.log('Инициализация игры...');
         
-=======
-    constructor(initialStars = 0) {
-        console.log('Инициализация игры...');
-        
-        // Создаем canvas и добавляем его в body
-        this.canvas = document.createElement('canvas');
-        this.canvas.width = 800;
-        this.canvas.height = 600;
-        document.body.appendChild(this.canvas);
-        
-        // Получаем контекст и проверяем его
-        this.ctx = this.canvas.getContext('2d');
-        if (!this.ctx) {
-            console.error('Не удалось получить контекст canvas');
-            return;
-        }
-        console.log('Canvas создан и контекст получен');
-
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
         // Создаем буферный canvas для анализа пикселей
         this.bufferCanvas = document.createElement('canvas');
         this.bufferCanvas.width = 800;
@@ -245,12 +223,6 @@ class Game {
             OUT_OF_BOUNDS: 'out'
         };
 
-<<<<<<< HEAD
-=======
-        // Добавляем счетчик для анимаций
-        this.animationFrame = 0;
-
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
         // Добавляем шум Перлина
         this.noise = new PerlinNoise();
 
@@ -300,7 +272,6 @@ class Game {
             const x = event.clientX - rect.left;
             const y = event.clientY - rect.top;
 
-<<<<<<< HEAD
             // Проверяем клик по кнопкам
             if (this.isClickOnNFTButton(x, y)) {
                 window.open('https://getgems.io/collection/EQDtXpkmwbKk8HoRSEcmwo1EY5dyDns1MgucjHOgCn-ydfVX', '_blank');
@@ -318,8 +289,6 @@ class Game {
                 return;
             }
 
-=======
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
             // Проверяем клик на покемона
             for (const pokemon of this.pokemons) {
                 const dx = pokemon.x - x;
@@ -361,16 +330,6 @@ class Game {
         this.windAngle = 0;
 
         // Добавляем массив звезд
-<<<<<<< HEAD
-=======
-        this.stars = [];
-        
-        // Добавляем интервал создания новых звезд
-        this.lastStarSpawnTime = 0;
-        this.starSpawnInterval = 5000;
-        
-        // Создаем начальные звезды
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
         this.maxStars = Math.floor(30 / 3);
         for (let i = 0; i < this.maxStars; i++) {
             this.createStar();
@@ -378,12 +337,6 @@ class Game {
 
         // Создаем массив для хранения спящих покемонов
         this.sleepingPokemons = new Set();
-<<<<<<< HEAD
-        this.lastSleepCheck = 0;
-        this.sleepCheckInterval = 30000; // Проверка каждые 30 секунд
-        this.sleepChance = 0.3; // 30% шанс заснуть
-        this.maxSleepingPokemons = Math.floor(30 * 0.4); // Максимум 40% покемонов могут спать
-=======
         this.lastSleepCheck = Date.now();
         this.sleepCheckInterval = 10000; // Уменьшаем интервал до 10 секунд для тестирования
         this.sleepChance = 0.3; // Увеличиваем шанс до 30% для тестирования
@@ -393,14 +346,12 @@ class Game {
         console.log('- Интервал проверки:', this.sleepCheckInterval, 'мс');
         console.log('- Шанс заснуть:', this.sleepChance * 100, '%');
         console.log('- Максимум спящих:', this.maxSleepingPokemons);
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
 
         // Добавляем счетчик для сообщений о краже
         this.theftMessageCount = 0;
         this.lastTheftMessageTime = 0;
         this.theftMessageInterval = 2000; // Минимальный интервал между сообщениями о краже
 
-<<<<<<< HEAD
         // Добавляем переменные для приветствий
         this.greetingQuotes = [
             "Привет, {name}!",
@@ -416,8 +367,6 @@ class Game {
         // Добавляем массив для печенья
         this.cookies = [];
 
-=======
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
         // Запускаем анимацию
         console.log('Запуск анимации...');
         this.animate = this.animate.bind(this);
@@ -512,11 +461,6 @@ class Game {
         const usedPokemon = new Set();
         const shuffledPokemon = [...this.allPokemon].sort(() => Math.random() - 0.5);
         
-<<<<<<< HEAD
-        console.log('Доступные покемоны:', shuffledPokemon);
-        
-=======
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
         for (let i = 0; i < 30; i++) {
             let x, y, species;
             let validPosition = false;
@@ -529,14 +473,10 @@ class Game {
                 const terrainType = this.getTerrainType(x, y);
                 const availablePokemon = shuffledPokemon.filter(p => !usedPokemon.has(p));
                 
-<<<<<<< HEAD
                 if (availablePokemon.length === 0) {
                     console.log('Нет доступных покемонов');
                     break;
                 }
-=======
-                if (availablePokemon.length === 0) break;
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
 
                 // Выбираем покемона в зависимости от местности
                 if (terrainType === this.terrainTypes.WATER) {
@@ -598,12 +538,6 @@ class Game {
         // Очищаем canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-<<<<<<< HEAD
-        // Проверяем приветствия покемонов
-        this.checkGreetings();
-
-=======
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
         // Отрисовываем карту как фон
         if (this.mapLoaded) {
             this.ctx.drawImage(this.mapImage, 0, 0, this.canvas.width, this.canvas.height);
@@ -630,7 +564,6 @@ class Game {
             }
             this.ctx.drawImage(this.mapImage, 0, 0, this.canvas.width, this.canvas.height);
             this.ctx.restore();
-<<<<<<< HEAD
         }
 
         // Обновляем и отрисовываем покемонов
@@ -642,85 +575,6 @@ class Game {
             this.drawShadow(pokemon);
             
             // Отрисовываем спрайт покемона
-=======
-            
-            // Обновляем буферный canvas, если нужно
-            if (this.bufferCtx.canvas.width !== this.canvas.width || 
-                this.bufferCtx.canvas.height !== this.canvas.height) {
-                this.bufferCanvas.width = this.canvas.width;
-                this.bufferCanvas.height = this.canvas.height;
-                this.bufferCtx.drawImage(this.mapImage, 0, 0, this.canvas.width, this.canvas.height);
-            }
-        }
-
-        // Добавляем заголовок "AI Pokemons"
-        this.ctx.save();
-        this.ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-        this.ctx.shadowBlur = 10;
-        this.ctx.shadowOffsetX = 2;
-        this.ctx.shadowOffsetY = 2;
-        
-        this.ctx.fillStyle = '#FFD700'; // Золотой цвет
-        this.ctx.font = 'bold 36px "Press Start 2P"';
-        this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'middle';
-        
-        // Добавляем обводку текста
-        this.ctx.strokeStyle = '#000000';
-        this.ctx.lineWidth = 3;
-        this.ctx.strokeText('AI Pokemons', this.canvas.width / 2, 40);
-        
-        // Рисуем сам текст
-        this.ctx.fillText('AI Pokemons', this.canvas.width / 2, 40);
-        
-        this.ctx.restore();
-
-        // Проверяем сон каждые 30 секунд
-        const currentTime = Date.now();
-        if (currentTime - this.lastSleepCheck > this.sleepCheckInterval) {
-            console.log('Проверка сна покемонов...');
-            console.log('Количество спящих покемонов:', this.sleepingPokemons.size);
-            console.log('Максимум спящих покемонов:', this.maxSleepingPokemons);
-            
-            this.lastSleepCheck = currentTime;
-            
-            // Проверяем только если количество спящих покемонов меньше максимума
-            if (this.sleepingPokemons.size < this.maxSleepingPokemons) {
-                this.pokemons.forEach(pokemon => {
-                    // Пропускаем уже спящих покемонов
-                    if (this.sleepingPokemons.has(pokemon)) {
-                        console.log(pokemon.name, 'уже спит');
-                        return;
-                    }
-                    
-                    // Проверяем шанс засыпания
-                    if (Math.random() < this.sleepChance) {
-                        console.log(pokemon.name, 'засыпает...');
-                        pokemon.startSleeping();
-                        this.sleepingPokemons.add(pokemon);
-                        this.addMessage(pokemon.name + " заснул!", pokemon.x, pokemon.y);
-                    }
-                });
-            }
-        }
-
-        // Проверяем пробуждение покемонов
-        this.pokemons.forEach(pokemon => {
-            if (pokemon.isSleeping && Date.now() - pokemon.sleepStartTime > pokemon.sleepDuration) {
-                pokemon.wakeUp();
-                this.sleepingPokemons.delete(pokemon);
-                this.addMessage(pokemon.name + " проснулся!", pokemon.x, pokemon.y);
-            }
-        });
-
-        // Отрисовка покемонов
-        this.pokemons.forEach(pokemon => {
-            if (!pokemon.isInFight) {
-                pokemon.update(this.pokemons, this.moonStones, this.biomes);
-            }
-            
-            // Отрисовка спрайта
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
             if (pokemon.spriteLoaded) {
                 this.ctx.save();
                 
@@ -732,35 +586,6 @@ class Game {
                 
                 // Добавляем эффект для спящих покемонов
                 if (pokemon.isSleeping) {
-<<<<<<< HEAD
-                    this.ctx.globalAlpha = 0.8; // Делаем покемона чуть прозрачнее
-                    
-                    // Рисуем "Zzz" над спящим покемоном
-                    this.ctx.font = '20px Arial';
-                    this.ctx.textAlign = 'center';
-                    this.ctx.textBaseline = 'middle';
-                    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                    this.ctx.fillText('Zzz', pokemon.x, pokemon.y - pokemon.size/2);
-                }
-
-                // Добавляем эффект сияния для победителя
-                if (pokemon.isGlowing) {
-                    const glowTime = Date.now() - pokemon.glowStartTime;
-                    if (glowTime < pokemon.glowDuration) {
-                        const glowIntensity = 1 - (glowTime / pokemon.glowDuration);
-                        this.ctx.shadowColor = 'rgba(255, 215, 0, 0.8)';
-                        this.ctx.shadowBlur = 40 * glowIntensity;
-                        this.ctx.shadowOffsetX = 0;
-                        this.ctx.shadowOffsetY = 0;
-                        
-                        // Добавляем дополнительное свечение вокруг покемона
-                        this.ctx.beginPath();
-                        this.ctx.arc(pokemon.x, pokemon.y, pokemon.size * 1.2, 0, Math.PI * 2);
-                        this.ctx.fillStyle = `rgba(255, 215, 0, ${0.3 * glowIntensity})`;
-                        this.ctx.fill();
-                    } else {
-                        pokemon.isGlowing = false;
-=======
                     this.ctx.globalAlpha = 0.7; // Делаем покемона более прозрачным
                     
                     // Добавляем "Z-z-z" над спящим покемоном
@@ -778,7 +603,6 @@ class Game {
                             pokemon.x + 20 + i * 15,
                             pokemon.y - 20 - i * 10 + zOffset
                         );
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
                     }
                 }
                 
@@ -1009,11 +833,7 @@ class Game {
                             // Добавляем сообщение о краже с ограничением частоты
                             const now = Date.now();
                             if (now - this.lastTheftMessageTime >= this.theftMessageInterval) {
-<<<<<<< HEAD
-                                this.addMessage(pokemon.name, "Ха-ха, теперь звезда моя! ⭐️");
-=======
                                 this.addMessage(pokemon.name, "Ха-ха, теперь звезда моя!");
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
                                 
                                 // Показываем сообщение спящего покемона только в 50% случаев
                                 if (Math.random() < 0.5) {
@@ -1029,7 +849,6 @@ class Game {
             }
         });
 
-<<<<<<< HEAD
         // Отрисовываем кнопку печенья
         this.drawCookieButton();
 
@@ -1068,8 +887,6 @@ class Game {
         // Удаляем собранное печенье
         this.cookies = this.cookies.filter(cookie => !cookie.collected);
 
-=======
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
         requestAnimationFrame(this.animate);
     }
 
@@ -1366,7 +1183,6 @@ class Game {
                y >= buttonY && y <= buttonY + buttonHeight;
     }
 
-<<<<<<< HEAD
     // Добавляем метод проверки клика по кнопке печенья
     isClickOnCookieButton(x, y) {
         const buttonX = 190;
@@ -1378,8 +1194,6 @@ class Game {
         return Math.sqrt(dx * dx + dy * dy) <= buttonRadius;
     }
 
-=======
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
     // Добавляем метод отрисовки кнопок
     drawButtons() {
         // Рисуем кнопку NFT справа внизу
@@ -1448,26 +1262,6 @@ class Game {
     }
 
     handleClick(pokemon) {
-<<<<<<< HEAD
-        // Проверяем клик по кнопкам
-        const rect = this.canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
-        // Проверяем клик по кнопке NFT Collection
-        if (this.isClickOnNFTButton(x, y)) {
-            window.open('https://getgems.io/collection/EQDtXpkmwbKk8HoRSEcmwo1EY5dyDns1MgucjHOgCn-ydfVX', '_blank');
-            return;
-        }
-
-        // Проверяем клик по кнопке Telegram Channel
-        if (this.isClickOnTelegramButton(x, y)) {
-            window.open('https://t.me/aipokemons', '_blank');
-            return;
-        }
-
-=======
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
         if (!pokemon.isInFight) {
             console.log('Клик по покемону:', pokemon.name);
             
@@ -1607,13 +1401,8 @@ class Game {
                     );
                     
                     if (stars.length > 0) {
-<<<<<<< HEAD
-                        const currentWinner = Math.random() < 0.5 ? fight.pokemon1 : fight.pokemon2;
-                        const loser = currentWinner === fight.pokemon1 ? fight.pokemon2 : fight.pokemon1;
-=======
                         const winner = Math.random() < 0.6 ? fight.aggressor : fight.defender;
                         const loser = winner === fight.pokemon1 ? fight.pokemon2 : fight.pokemon1;
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
                         
                         stars.forEach(star => {
                             if (star.carriedBy === loser) {
@@ -1647,14 +1436,6 @@ class Game {
                 const winner = Math.random() < 0.5 ? fight.pokemon1 : fight.pokemon2;
                 const loser = winner === fight.pokemon1 ? fight.pokemon2 : fight.pokemon1;
                 
-<<<<<<< HEAD
-                // Добавляем эффект сияния для победителя
-                winner.isGlowing = true;
-                winner.glowStartTime = Date.now();
-                winner.glowDuration = 3000; // 3 секунды
-
-=======
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
                 // Создаем сообщения для победителя и проигравшего
                 this.currentMessage = {
                     pokemon: winner,
@@ -1763,7 +1544,6 @@ class Game {
         };
         this.stars.push(star);
     }
-<<<<<<< HEAD
 
     checkGreetings() {
         const currentTime = Date.now();
@@ -1873,8 +1653,6 @@ class Game {
         
         this.ctx.restore();
     }
-=======
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
 }
 
 // Запуск игры
