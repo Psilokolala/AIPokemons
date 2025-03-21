@@ -1,0 +1,29 @@
+{
+<<<<<<< HEAD
+  "name": "pokemon-game",
+  "version": "1.0.0",
+  "description": "Pokemon Game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+=======
+  "name": "aipoks",
+  "version": "1.0.0",
+  "description": "Pokemon Game",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 3000"
+  },
+  "keywords": ["pokemon", "game"],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://your-username.github.io/AIPoks"
+>>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
+}

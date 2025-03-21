@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+<<<<<<< HEAD
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Покемоны</title>
+=======
+    <title>Покемоны в песочнице</title>
+>>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+<<<<<<< HEAD
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a1a;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Press Start 2P', monospace;
+        }
+        #starsCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        #gameCanvas {
+            position: relative;
+            z-index: 2;
+            border: 2px solid #333;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+=======
+            padding: 20px;
+            background-color: #87CEEB;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Press Start 2P', monospace;
+        }
+>>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: 0 auto;
+            background-color: #87CEEB;
+        }
+    </style>
+</head>
+<body>
+<<<<<<< HEAD
+    <canvas id="starsCanvas"></canvas>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        // Создаем звёзды
+        const starsCanvas = document.getElementById('starsCanvas');
+        const starsCtx = starsCanvas.getContext('2d');
+        
+        // Устанавливаем размер canvas звёзд
+        function resizeStarsCanvas() {
+            starsCanvas.width = window.innerWidth;
+            starsCanvas.height = window.innerHeight;
+        }
+        resizeStarsCanvas();
+        window.addEventListener('resize', resizeStarsCanvas);
+
+        // Создаем массив звёзд
+        const stars = [];
+        for (let i = 0; i < 200; i++) {
+            stars.push({
+                x: Math.random() * starsCanvas.width,
+                y: Math.random() * starsCanvas.height,
+                size: Math.random() * 2,
+                speed: Math.random() * 0.5 + 0.1
+            });
+        }
+
+        // Анимация звёзд
+        function animateStars() {
+            starsCtx.fillStyle = '#1a1a1a';
+            starsCtx.fillRect(0, 0, starsCanvas.width, starsCanvas.height);
+            
+            stars.forEach(star => {
+                star.y += star.speed;
+                if (star.y > starsCanvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * starsCanvas.width;
+                }
+                
+                starsCtx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.2})`;
+                starsCtx.beginPath();
+                starsCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                starsCtx.fill();
+            });
+            
+            requestAnimationFrame(animateStars);
+        }
+        animateStars();
+    </script>
+=======
+>>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
+    <script type="module" src="pokemon-sandbox.js"></script>
+    <script type="module" src="texts.js"></script>
+    <script type="module" src="game.js"></script>
+    <script type="module">
+        let canvas = null;
+
+        // Ждем загрузки canvas
+        function initTouchHandling() {
+            canvas = document.querySelector('canvas');
+            if (!canvas) {
+                setTimeout(initTouchHandling, 100);
+                return;
+            }
+
+            // Добавляем обработчик касаний для кликов
+            canvas.addEventListener('touchend', handleTouchEnd);
+            canvas.addEventListener('touchcancel', handleTouchEnd);
+        }
+
+        function handleTouchEnd(e) {
+            const touch = e.changedTouches[0];
+            const rect = canvas.getBoundingClientRect();
+            
+            // Получаем масштаб между физическим размером canvas и его отображением
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            // Вычисляем координаты с учетом масштаба
+            const x = (touch.clientX - rect.left) * scaleX;
+            const y = (touch.clientY - rect.top) * scaleY;
+
+            // Добавляем короткую вибрацию
+            if (navigator.vibrate) {
+                navigator.vibrate(50); // 50мс вибрации
+            }
+
+            // Создаем событие клика с правильными координатами
+            const clickEvent = new MouseEvent('click', {
+                clientX: x,
+                clientY: y,
+                bubbles: true
+            });
+
+            // Отправляем событие клика
+            canvas.dispatchEvent(clickEvent);
+        }
+
+        // Инициализируем обработку касаний после загрузки canvas
+        initTouchHandling();
+    </script>
+</body>
+</html> 
