@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # AI Pokemons Game
 
 Интерактивная игра с покемонами, где они взаимодействуют друг с другом, сражаются и собирают лунные камни.
@@ -22,27 +21,4 @@
 4. Откройте http://localhost:3000 в браузере
 
 ## Играть онлайн
-[Играть на GitHub Pages](https://psilokolala.github.io/AIPokemons/) 
-=======
-# AIPoks - Pokemon Game
-
-Браузерная игра про покемонов, созданная с использованием HTML5 Canvas и JavaScript.
-
-## Как играть
-
-1. Откройте игру по ссылке: [AIPoks Game](https://your-username.github.io/AIPoks)
-2. Используйте мышь или тачскрин для взаимодействия с игрой
-3. Наслаждайтесь игровым процессом!
-
-## Локальный запуск
-
-1. Склонируйте репозиторий
-2. Запустите локальный сервер: `npm start`
-3. Откройте браузер и перейдите по адресу `http://localhost:3000`
-
-## Технологии
-
-- HTML5 Canvas
-- JavaScript
-- CSS3 
->>>>>>> 927ee06e02b0092edfc4632e14452ac6982279b1
+[Играть на GitHub Pages](https://psilokolala.github.io/AIPokemons/)
